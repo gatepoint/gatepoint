@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package project.api.general.v1;
+
+option go_package = "github.com/gatepoint/gatepoint/api/general/v1";
+
+message TokenResponse {
+  string token = 1;
+}
+
+message Demo {
+  string demo = 1;
+}
+
+message DemoRequest {
+  string demo = 1;
+}
+
+message DemoResponse {
+  Demo demo = 1;
+}
+
+message DemoDb {
+  int64 id = 1;
+  string demo_db = 2;
+}
+
+message DemoDbRequest {
+  string demo_db = 1;
+}
+
+message DemoDbResponse {
+  DemoDb demo_db = 1;
+}

@@ -1,0 +1,7 @@
+server:
+  http:
+    addr: 0.0.0.0:8081
+    timeout: 1s
+  grpc:
+    addr: 0.0.0.0:9091
+    timeout: 1s

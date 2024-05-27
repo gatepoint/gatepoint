@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "api/general/v1/demo.proto";
+
+option go_package = "github.com/gatepoint/gatepoint/api/gatepoint/v1";
+
+service Demo {
+  rpc Demo(project.api.general.v1.DemoRequest) returns (project.api.general.v1.DemoResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/demo"
+    };
+  }
+}
+
+service DemoDb {
+  rpc Token(google.protobuf.Empty) returns (project.api.general.v1.TokenResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/token"
+    };
+  }
+
+  rpc DemoDb(project.api.general.v1.DemoDbRequest) returns (project.api.general.v1.DemoDbResponse) {
+    option (google.api.http) = {
+      get: "/api/v1/demodb"
+    };
+  }
+}
