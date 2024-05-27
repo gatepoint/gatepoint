@@ -2,8 +2,13 @@ package service
 
 import (
 	"context"
-	generalv1 "github.com/gatepoint/gatepoint/api/general/v1"
+
 	projectv1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
+	generalv1 "github.com/gatepoint/gatepoint/api/general/v1"
+	"github.com/gatepoint/gatepoint/pkg/utils"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 )
 
 type DemoService struct {
@@ -16,9 +21,24 @@ func NewDemoService() *DemoService {
 }
 
 func (s *DemoService) Demo(ctx context.Context, req *generalv1.DemoRequest) (*generalv1.DemoResponse, error) {
+	_, err := utils.AuthJWT(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, err.Error())
+	}
+
 	return &generalv1.DemoResponse{
 		Demo: &generalv1.Demo{
 			Demo: req.Demo,
 		},
+	}, nil
+}
+
+func (s *DemoService) Token(ctx context.Context, req *emptypb.Empty) (*generalv1.TokenResponse, error) {
+	accessToken, _, errGenTokens := utils.GenerateTokens("111111")
+	if errGenTokens != nil {
+		return nil, errGenTokens
+	}
+	return &generalv1.TokenResponse{
+		Token: accessToken,
 	}, nil
 }

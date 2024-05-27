@@ -12,18 +12,10 @@ service Demo {
       get: "/api/v1/demo"
     };
   }
-}
 
-service DemoDb {
   rpc Token(google.protobuf.Empty) returns (project.api.general.v1.TokenResponse) {
     option (google.api.http) = {
       get: "/api/v1/token"
-    };
-  }
-
-  rpc DemoDb(project.api.general.v1.DemoDbRequest) returns (project.api.general.v1.DemoDbResponse) {
-    option (google.api.http) = {
-      get: "/api/v1/demodb"
     };
   }
 }

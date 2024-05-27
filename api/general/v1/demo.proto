@@ -19,16 +19,3 @@ message DemoRequest {
 message DemoResponse {
   Demo demo = 1;
 }
-
-message DemoDb {
-  int64 id = 1;
-  string demo_db = 2;
-}
-
-message DemoDbRequest {
-  string demo_db = 1;
-}
-
-message DemoDbResponse {
-  DemoDb demo_db = 1;
-}
