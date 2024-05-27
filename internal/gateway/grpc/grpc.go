@@ -5,6 +5,7 @@ import (
 	"net"
 
 	v1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
+	"github.com/gatepoint/gatepoint/internal/gateway"
 
 	"github.com/gatepoint/gatepoint/internal/service"
 	"github.com/gatepoint/gatepoint/pkg/log"
@@ -12,9 +13,9 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Run(ctx context.Context, network, address string) error {
+func Run(ctx context.Context, opts gateway.Options) error {
 	//init grpc server and run
-	l, err := net.Listen(network, address)
+	l, err := net.Listen(opts.Network, opts.GRPCAddr)
 	if err != nil {
 		return err
 	}
@@ -29,6 +30,7 @@ func Run(ctx context.Context, network, address string) error {
 	}()
 	s := grpc.NewServer()
 
+	// Reg services
 	demoService := service.NewDemoService()
 	v1.RegisterDemoServer(s, demoService)
 
@@ -38,7 +40,7 @@ func Run(ctx context.Context, network, address string) error {
 	}()
 
 	go func() error {
-		log.L(ctx).Infof("grpc listen on:%s\n", address)
+		log.L(ctx).Infof("grpc listen on:%s\n", opts.GRPCAddr)
 		if err := s.Serve(l); err != nil {
 			return err
 		}

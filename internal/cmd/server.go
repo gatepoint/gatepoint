@@ -38,17 +38,17 @@ func GetServerCommand() *cobra.Command {
 			stop := make(chan struct{})
 			defer WaitSignal(stop)
 
-			if err := grpc.Run(context.Background(), "tcp", ":9090"); err != nil {
-				log.Fatalf("grpc start error: %s", err)
-			}
 			opts := gateway.Options{
-				Addr: ":8081",
-				GRPCServer: gateway.Endpoint{
-					Network: "tcp",
-					Addr:    "localhost:9090",
-				},
+				HTTPAddr:   viper.GetString("server.http.addr"),
+				GRPCAddr:   viper.GetString("server.grpc.addr"),
+				Network:    "tcp",
 				OpenAPIDir: "api/v1",
 			}
+
+			if err := grpc.Run(context.Background(), opts); err != nil {
+				log.Fatalf("grpc start error: %s", err)
+			}
+
 			if err := gateway.Run(context.Background(), opts); err != nil {
 				log.Fatalf("grpc gateway start error: %s", err)
 			}

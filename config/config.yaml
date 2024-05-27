@@ -5,3 +5,6 @@ server:
   grpc:
     addr: 0.0.0.0:9091
     timeout: 1s
+
+kubernetes:
+  kubeconfig:
