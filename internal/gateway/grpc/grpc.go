@@ -6,6 +6,7 @@ import (
 
 	v1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
 	"github.com/gatepoint/gatepoint/internal/gateway"
+	"github.com/gatepoint/gatepoint/pkg/kubernetes"
 
 	"github.com/gatepoint/gatepoint/internal/service"
 	"github.com/gatepoint/gatepoint/pkg/log"
@@ -30,8 +31,13 @@ func Run(ctx context.Context, opts gateway.Options) error {
 	}()
 	s := grpc.NewServer()
 
+	clientset, err := kubernetes.GetClientset(opts.KubeConfig)
+	if err != nil {
+		return err
+	}
+
 	// Reg services
-	demoService := service.NewDemoService()
+	demoService := service.NewDemoService(clientset)
 	v1.RegisterDemoServer(s, demoService)
 
 	go func() {

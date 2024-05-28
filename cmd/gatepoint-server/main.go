@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/gatepoint/gatepoint/internal/cmd"
 	"os"
+
+	"github.com/gatepoint/gatepoint/internal/cmd"
 )
 
 func main() {

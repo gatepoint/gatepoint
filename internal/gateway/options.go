@@ -8,4 +8,5 @@ type Options struct {
 	HTTPAddr   string
 	OpenAPIDir string
 	Mux        []runtime.ServeMuxOption
+	KubeConfig string
 }

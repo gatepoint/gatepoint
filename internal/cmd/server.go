@@ -43,6 +43,7 @@ func GetServerCommand() *cobra.Command {
 				GRPCAddr:   viper.GetString("server.grpc.addr"),
 				Network:    "tcp",
 				OpenAPIDir: "api/v1",
+				KubeConfig: viper.GetString("kubernetes.kubeconfig"),
 			}
 
 			if err := grpc.Run(context.Background(), opts); err != nil {
