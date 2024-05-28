@@ -31,6 +31,7 @@ api_gen:
 		--openapiv2_opt merge_file_name="gatepoint." \
 		api/gatepoint/v1/gatepoint.proto api/general/v1/demo.proto
 	cp -R *.swagger.json swagger-ui/gatepoint.swagger.json
+	rm *.swagger.json
 
 api_clean:
 	rm -f api/*/*/*.pb.go api/*/*/*.pb.gw.go api/*/*/*.swagger.json api/*/*/*.pb.validate.go
