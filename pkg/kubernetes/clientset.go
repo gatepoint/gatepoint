@@ -82,9 +82,14 @@ func GetOutClusterConfigTest(kubeconfig string) rest.Config {
 	if err != nil {
 		log.Fatalf("init kubernetes config error1: %s", err)
 	}
-	defer os.Remove(tmpfile.Name())
+	defer func(name string) {
+		err := os.Remove(name)
+		if err != nil {
+			log.Fatalf("remove temp kubeconfig file error: %s", err)
+		}
+	}(tmpfile.Name())
 	if err := os.WriteFile(tmpfile.Name(), []byte(kubeconfig), 0666); err != nil {
-		log.Fatalf("init kubernetes config error2: %s", err)
+		log.Fatalf("init kubernetes config error: %s", err)
 	}
 	config, err := clientcmd.BuildConfigFromFlags("https://172.30.120.220:6443", tmpfile.Name())
 	if err != nil {
@@ -108,7 +113,18 @@ func GetOutClusterConfig(kubeconfig string) rest.Config {
 	if err != nil {
 		log.Fatalf("convert kubeconfig to file error: %s", err)
 	}
-	defer os.Remove(tmpfile.Name())
+
+	defer func(f *os.File) {
+		name := f.Name()
+		err := f.Close()
+		if err != nil {
+			log.Fatalf("close temp kubeconfig error: %s", err)
+		}
+		if err := os.Remove(name); err != nil {
+			log.Fatalf("remove temp kubeconfig error: %s", err)
+		}
+	}(tmpfile)
+
 	if err := os.WriteFile(tmpfile.Name(), []byte(kubeconfig), 0666); err != nil {
 		log.Fatalf("write temp kubeconfig error: %s", err)
 	}
@@ -137,5 +153,6 @@ func GetOutClusterConfig(kubeconfig string) rest.Config {
 	if err != nil {
 		log.Fatalf("init kubernetes config error: %s", err)
 	}
+
 	return *config
 }
