@@ -5,8 +5,8 @@ import (
 	"net"
 
 	v1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
-	"github.com/gatepoint/gatepoint/internal/gateway"
 	"github.com/gatepoint/gatepoint/pkg/kubernetes"
+	"github.com/gatepoint/gatepoint/pkg/utils"
 
 	"github.com/gatepoint/gatepoint/internal/service"
 	"github.com/gatepoint/gatepoint/pkg/log"
@@ -14,7 +14,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Run(ctx context.Context, opts gateway.Options) error {
+func Run(ctx context.Context, opts utils.Options) error {
 	//init grpc server and run
 	l, err := net.Listen(opts.Network, opts.GRPCAddr)
 	if err != nil {

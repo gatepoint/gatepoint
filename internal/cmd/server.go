@@ -8,8 +8,9 @@ import (
 	"syscall"
 
 	"github.com/gatepoint/gatepoint/internal/gateway"
-	"github.com/gatepoint/gatepoint/internal/gateway/grpc"
+	"github.com/gatepoint/gatepoint/internal/grpc"
 	"github.com/gatepoint/gatepoint/pkg/log"
+	"github.com/gatepoint/gatepoint/pkg/utils"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 
@@ -38,7 +39,7 @@ func GetServerCommand() *cobra.Command {
 			stop := make(chan struct{})
 			defer WaitSignal(stop)
 
-			opts := gateway.Options{
+			opts := utils.Options{
 				HTTPAddr:   viper.GetString("server.http.addr"),
 				GRPCAddr:   viper.GetString("server.grpc.addr"),
 				Network:    "tcp",
