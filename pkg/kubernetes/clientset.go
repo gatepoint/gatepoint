@@ -2,6 +2,7 @@ package kubernetes
 
 import (
 	"flag"
+	"log"
 	"path/filepath"
 
 	"k8s.io/client-go/kubernetes"
@@ -22,7 +23,7 @@ func GetClientset(kubeconfig string) (kubernetes.Clientset, error) {
 	// creates the clientset
 	clientset, err := kubernetes.NewForConfig(&config)
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf("init kubernetes clientset error: %s", err)
 	}
 	return *clientset, nil
 }
@@ -30,7 +31,7 @@ func GetClientset(kubeconfig string) (kubernetes.Clientset, error) {
 func GetInClusterConfig() rest.Config {
 	config, err := rest.InClusterConfig()
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf("init kubernetes config error: %s", err)
 	}
 	return *config
 }
@@ -45,7 +46,7 @@ func GetOutClusterConfig(kubeconfig string) rest.Config {
 	// use the current context in kubeconfig
 	config, err := clientcmd.BuildConfigFromFlags("", kubeconfig)
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf("init kubernetes config error: %s", err)
 	}
 	return *config
 }
