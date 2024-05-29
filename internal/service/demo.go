@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
 	"strconv"
 
 	projectv1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
@@ -40,7 +41,7 @@ func (s *DemoService) Demo(ctx context.Context, req *generalv1.DemoRequest) (*ge
 func (s *DemoService) Token(ctx context.Context, req *emptypb.Empty) (*generalv1.TokenResponse, error) {
 	pods, err := s.clientset.CoreV1().Pods("").List(context.TODO(), metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		log.Fatalf("error: %s", err)
 	}
 	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
 	accessToken, _, errGenTokens := utils.GenerateTokens(strconv.Itoa(len(pods.Items)))
