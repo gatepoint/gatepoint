@@ -109,7 +109,7 @@ func GetOutClusterConfigTest2(kubeconfig string) rest.Config {
 }
 
 func GetOutClusterConfig(kubeconfig string) rest.Config {
-	tmpfile, err := os.CreateTemp("./", "kubeconfig")
+	tmpfile, err := os.CreateTemp("", "kubeconfig")
 	if err != nil {
 		log.Fatalf("convert kubeconfig to file error: %s", err)
 	}
@@ -125,7 +125,7 @@ func GetOutClusterConfig(kubeconfig string) rest.Config {
 		}
 	}(tmpfile)
 
-	if err := os.WriteFile(tmpfile.Name(), []byte(kubeconfig), 0666); err != nil {
+	if err := os.WriteFile(tmpfile.Name(), []byte(kubeconfig), 0777); err != nil {
 		log.Fatalf("write temp kubeconfig error: %s", err)
 	}
 

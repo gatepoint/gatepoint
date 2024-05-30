@@ -1,6 +1,6 @@
 .PHONY: build run lint
 build:
-	go build -o bin/gatepoint-server ./cmd/gatepoint-server/
+	CGO_ENABLED=0 GOOS=${TARGETOS:-linux} GOARCH=${TARGETARCH} go build -o ./bin/gatepoint-server ./cmd/gatepoint-server/
 
 run:
 	bin/gatepoint-server server
@@ -36,3 +36,7 @@ api_gen:
 api_clean:
 	rm -f api/*/*/*.pb.go api/*/*/*.pb.gw.go api/*/*/*.swagger.json api/*/*/*.pb.validate.go
 	rm -rf swagger-ui/*.swagger.json
+
+.PHONY: server-image
+server-image:
+	docker buildx build -f tools/docker/gatepoint-server/Dockerfile -t release.daocloud.io/skoala/gatepoint:v0.12 . --platform linux/amd64,linux/arm64 --push

@@ -44,6 +44,19 @@ func (s *DemoService) Token(ctx context.Context, req *emptypb.Empty) (*generalv1
 		log.Fatalf("error: %s", err)
 	}
 	fmt.Printf("There are %d pods in the cluster\n", len(pods.Items))
+
+	svcs, err := s.clientset.CoreV1().Services("").List(ctx, metav1.ListOptions{})
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
+	fmt.Printf("There are %d svcs in the cluster\n", len(svcs.Items))
+
+	secrets, err := s.clientset.CoreV1().Secrets("").List(ctx, metav1.ListOptions{})
+	if err != nil {
+		log.Fatalf("error: %s", err)
+	}
+	fmt.Printf("There are %d secrets in the cluster\n", len(secrets.Items))
+
 	accessToken, _, errGenTokens := utils.GenerateTokens(strconv.Itoa(len(pods.Items)))
 	if errGenTokens != nil {
 		return nil, errGenTokens
