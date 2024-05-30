@@ -57,6 +57,28 @@ func (s *DemoService) Token(ctx context.Context, req *emptypb.Empty) (*generalv1
 	}
 	fmt.Printf("There are %d secrets in the cluster\n", len(secrets.Items))
 
+	// run cmd
+	//app := "helm"
+	//
+	//arg0 := "install"
+	//arg1 := "eg2"
+	//arg2 := "oci://docker.io/envoyproxy/gateway-helm"
+	//arg3 := "--version"
+	//arg4 := "v0.0.0-latest"
+	//arg5 := "-n"
+	//arg6 := "envoy-gateway-system"
+	//arg7 := "--create-namespace"
+	//
+	//cmd := exec.Command(app, arg0, arg1, arg2, arg3, arg4, arg5, arg6, arg7)
+	//stdout, err := cmd.Output()
+	//
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//}
+	//
+	//// Print the output
+	//fmt.Println(string(stdout))
+
 	accessToken, _, errGenTokens := utils.GenerateTokens(strconv.Itoa(len(pods.Items)))
 	if errGenTokens != nil {
 		return nil, errGenTokens
