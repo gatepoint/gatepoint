@@ -19,3 +19,69 @@ service Demo {
     };
   }
 }
+
+service GatewayAPI {
+  rpc CreateGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/gatewayclasses/name"
+      body: "*"
+    };
+  }
+
+  rpc DeleteGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/gatewayclasses/name"
+    };
+  }
+
+  rpc UpdateGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/gatewayclasses/name"
+      body: "*"
+    };
+  }
+
+  rpc GetGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/api/v1/gatewayclasses/name"
+    };
+  }
+
+  rpc ListGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/api/v1/gatewayclasses"
+    };
+  }
+
+  rpc CreateGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/gateways/name"
+      body: "*"
+    };
+  }
+
+  rpc DeleteGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/api/v1/gateways/name"
+    };
+  }
+
+  rpc UpdateGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      put: "/api/v1/gateways/name"
+      body: "*"
+    };
+  }
+
+  rpc GetGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/api/v1/gateways/name"
+    };
+  }
+
+  rpc ListGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      get: "/api/v1/gateways"
+    };
+  }
+}

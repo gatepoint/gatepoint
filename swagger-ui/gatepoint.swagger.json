@@ -7,6 +7,9 @@
   "tags": [
     {
       "name": "Demo"
+    },
+    {
+      "name": "GatewayAPI"
     }
   ],
   "consumes": [
@@ -43,6 +46,268 @@
         ],
         "tags": [
           "Demo"
+        ]
+      }
+    },
+    "/api/v1/gatewayclasses": {
+      "get": {
+        "operationId": "GatewayAPI_ListGatewayClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      }
+    },
+    "/api/v1/gatewayclasses/name": {
+      "get": {
+        "operationId": "GatewayAPI_GetGatewayClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "delete": {
+        "operationId": "GatewayAPI_DeleteGatewayClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "post": {
+        "operationId": "GatewayAPI_CreateGatewayClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "put": {
+        "operationId": "GatewayAPI_UpdateGatewayClass",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "GatewayAPI"
+        ]
+      }
+    },
+    "/api/v1/gateways": {
+      "get": {
+        "operationId": "GatewayAPI_ListGateway",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      }
+    },
+    "/api/v1/gateways/name": {
+      "get": {
+        "operationId": "GatewayAPI_GetGateway",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "delete": {
+        "operationId": "GatewayAPI_DeleteGateway",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "post": {
+        "operationId": "GatewayAPI_CreateGateway",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "GatewayAPI"
+        ]
+      },
+      "put": {
+        "operationId": "GatewayAPI_UpdateGateway",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ],
+        "tags": [
+          "GatewayAPI"
         ]
       }
     },
