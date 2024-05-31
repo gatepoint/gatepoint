@@ -20,6 +20,15 @@ service Demo {
   }
 }
 
+service Global {
+  rpc InitCluster(google.protobuf.Empty) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/api/v1/init"
+      body: "*"
+    };
+  }
+}
+
 service GatewayAPI {
   rpc CreateGatewayClass(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (google.api.http) = {
