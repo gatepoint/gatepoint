@@ -1,0 +1,43 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/gatepoint/gatepoint/api
+      path: api
+plugins:
+  - remote: buf.build/protocolbuffers/go
+    out: api
+    opt: paths=source_relative
+  - remote: buf.build/grpc/go
+    out: api
+    opt: paths=source_relative
+  - remote: buf.build/grpc-ecosystem/gateway
+    out: api
+    opt:
+      - paths=source_relative
+      - allow_delete_body=true
+  - remote: buf.build/grpc-ecosystem/openapiv2
+    out: api
+    opt:
+      - logtostderr=true
+      - allow_merge=true
+      - output_format=json
+      - merge_file_name=gatepoint.
+      - allow_delete_body=true
+  - remote: buf.build/bufbuild/validate-go
+    out: api
+    opt:
+      - paths=source_relative
+  - local:  protoc-gen-golang-jsonshim
+    out: api
+    opt:
+      - paths=source_relative
+  - local: protoc-gen-golang-deepcopy
+    out: api
+    opt:
+      - paths=source_relative
+
+
+inputs:
+  - directory: api

@@ -5,7 +5,9 @@ import (
 )
 
 var (
-	cfgFile string
+	cfgFile  string
+	httpAddr string
+	grpcAddr string
 )
 
 func GetRootCommand() *cobra.Command {
@@ -14,7 +16,8 @@ func GetRootCommand() *cobra.Command {
 		Short: "Standard HTTP and GRPC Go Project Layout with Protobuf and GORM",
 	}
 
-	cmd.AddCommand(GetServerCommand())
+	cmd.AddCommand(getServerCommand())
+	cmd.AddCommand(getVersionCommand())
 
 	return cmd
 }

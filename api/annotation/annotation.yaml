@@ -1,0 +1,10 @@
+annotations:
+  - name: gatepoint/test
+    description: this is a test annotation
+    featureStatus: Alpha
+    hidden: true
+    deprecated: false
+    resources:
+      - Deployment
+      - Pod
+

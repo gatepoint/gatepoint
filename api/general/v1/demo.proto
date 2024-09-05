@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package project.api.general.v1;
+package general.v1;
 
 option go_package = "github.com/gatepoint/gatepoint/api/general/v1";
 

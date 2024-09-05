@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "github.com/gatepoint/gatepoint/api/common/v1";
+
+message Error {
+  ErrType code = 1;
+  string message = 2;
+  string detail = 3;
+}
+
+//var (
+//	UnAuthorized errType = "UnAuthorized"
+//	NotFound     errType = "NotFound"
+//	InvalidArg   errType = "InvalidArg"
+//	Permission   errType = "Permission"
+//	Internal     errType = "Internal"
+//	AlreadyExist errType = "AlreadyExist"
+//)
+enum ErrType {
+    ERR_TYPE_UNSPECIFIED = 0;
+    ERR_TYPE_UNAUTHORIZED = 1;
+    ERR_TYPE_NOT_FOUND = 2;
+    ERR_TYPE_INVALID_ARG = 3;
+    ERR_TYPE_PERMISSION = 4;
+    ERR_TYPE_INTERNAL = 5;
+    ERR_TYPE_ALREADY_EXIST = 6;
+}

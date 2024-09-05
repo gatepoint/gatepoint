@@ -2,17 +2,18 @@ package cmd
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/gatepoint/gatepoint/internal/gateway"
-	"github.com/gatepoint/gatepoint/internal/grpc"
+	"github.com/gatepoint/gatepoint/internal/route"
+	gatewayServer "github.com/gatepoint/gatepoint/internal/route/gateway"
+	grpcServer "github.com/gatepoint/gatepoint/internal/route/grpc"
+	"github.com/gatepoint/gatepoint/pkg/config"
 	"github.com/gatepoint/gatepoint/pkg/log"
-	"github.com/gatepoint/gatepoint/pkg/utils"
-	"github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+
+	"google.golang.org/grpc"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -23,75 +24,106 @@ var (
 	cfgPath string
 )
 
-func GetServerCommand() *cobra.Command {
-	cmd := &cobra.Command{
+func getServerCommand() *cobra.Command {
+	rootCmd := &cobra.Command{
 		Use:   "server",
 		Short: "Run both grpc and http server",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			log, err := log.New()
-			if err != nil {
+			if err := config.LoadConfig(cfgPath); err != nil {
 				return err
 			}
+			log.Init()
 			cmd.Flags().VisitAll(func(flag *pflag.Flag) {
 				log.Infof("FLAG: --%s=%q", flag.Name, flag.Value)
 			})
 
-			stop := make(chan struct{})
-			defer WaitSignal(stop)
+			rootCtx, cancel := context.WithCancel(context.Background())
 
-			opts := utils.Options{
-				HTTPAddr:   viper.GetString("server.http.addr"),
-				GRPCAddr:   viper.GetString("server.grpc.addr"),
-				Network:    "tcp",
-				OpenAPIDir: "api/v1",
-				KubeConfig: viper.GetString("kubernetes.kubeconfig"),
-			}
+			defer func() {
+				log.Info("wait for exit signal")
+				sig := WaitSignal()
+				log.Infof("gatepoint is exiting now, because of the signal: %s", sig)
+				cancel()
+				log.Flush()
+			}()
 
-			if err := grpc.Run(context.Background(), opts); err != nil {
-				log.Fatalf("grpc start error: %s", err)
-			}
+			//options := utils.Options{
+			//	HTTPAddr:   viper.GetString("server.http.addr"),
+			//	GRPCAddr:   viper.GetString("server.grpc.addr"),
+			//	Network:    "tcp",
+			//	OpenAPIDir: "api/v1",
+			//	KubeConfig: viper.GetString("kubernetes.kubeconfig"),
+			//}
+			newGrpcServer := grpcServer.NewGrpcServer(rootCtx, route.RegisterGRPCRoutes, grpcServerOption)
+			go func() {
+				if err := newGrpcServer.Run(); err != nil {
+					log.Fatalf("grpc server run error: %s", err)
+				}
+			}()
 
-			if err := gateway.Run(context.Background(), opts); err != nil {
-				log.Fatalf("grpc gateway start error: %s", err)
-			}
+			newGatewayServer := gatewayServer.NewGatewayServer(rootCtx, route.RegisterHTTPRoutes, serverMuxOption)
+			return newGatewayServer.Run()
+			//if err := gateway.Run(rootCtx, options, serverMuxOption); err != nil {
+			//	log.Fatalf("grpc gateway start error: %s", err)
+			//}
+			//
 
-			return nil
 		},
 	}
-	cobra.OnInitialize(InitConfig)
-	cmd.PersistentFlags().StringVar(&cfgFile, "config", "./config/config.yaml", "config file (default is $HOME/.gatepoint.yaml)")
-	cmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	//cobra.OnInitialize(InitConfig)
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./config/config.yaml", "config file (default is $HOME/.gatepoint.yaml)")
+	//rootCmd.PersistentFlags().StringVarP(&httpAddr, "http-addr", "", ":8080", "HTTP listen address.")
+	//rootCmd.PersistentFlags().StringVarP(&grpcAddr, "grpc-addr", "", ":8081", "GRPC listen address.")
+	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	cmd.PersistentFlags().StringVarP(&cfgPath, "config-path", "c", "",
+	rootCmd.PersistentFlags().StringVarP(&cfgPath, "config-path", "g", "./config/config.yaml",
 		"The path to the configuration file.")
 
-	return cmd
+	return rootCmd
 }
 
-func WaitSignal(stop chan struct{}) {
-	sigs := make(chan os.Signal, 1)
-	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
-	<-sigs
-	close(stop)
+func grpcServerOption() []grpc.ServerOption {
+	return nil
 }
 
-func InitConfig() {
-	if cfgFile != "" {
-		viper.SetConfigFile(cfgFile)
-	} else {
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
-		}
-
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".gatepoint")
-	}
-
-	viper.AutomaticEnv()
-
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
+func serverMuxOption() []runtime.ServeMuxOption {
+	return []runtime.ServeMuxOption{runtime.WithErrorHandler(route.HttpErrorHandler)}
 }
+
+func WaitSignal() string {
+	sigsCh := make(chan os.Signal, 1)
+	signal.Notify(sigsCh, syscall.SIGINT, syscall.SIGTERM)
+	sig := <-sigsCh
+	return sig.String()
+}
+
+//func InitConfig() {
+//	if cfgFile != "" {
+//		viper.SetConfigType("yaml")
+//		viper.SetConfigFile(cfgFile)
+//		viper.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+//	} else {
+//		home, err := homedir.Dir()
+//		if err != nil {
+//			fmt.Println(err)
+//			os.Exit(1)
+//		}
+//
+//		viper.AddConfigPath(home)
+//		viper.SetConfigName(".gatepoint")
+//	}
+//
+//	viper.AutomaticEnv()
+//
+//	if err := viper.ReadInConfig(); err != nil {
+//		panic(fmt.Sprintf("Failed to read in the config file %s: %v", viper.ConfigFileUsed(), err))
+//	}
+//	fmt.Println("Using config file:", viper.ConfigFileUsed())
+//
+//	if err := viper.Unmarshal(&config.Shared, func(decoderConfig *mapstructure.DecoderConfig) {
+//		decoderConfig.TagName = "json"
+//	}); err != nil {
+//		panic(fmt.Sprintf("Failed to unmarshal configuration from disk: %v", err))
+//	}
+//
+//}

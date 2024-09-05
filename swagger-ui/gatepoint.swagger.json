@@ -1,18 +1,18 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "api/gatepoint/v1/gatepoint.proto",
+    "title": "gatepoint/v1/gatepoint.proto",
     "version": "version not set"
   },
   "tags": [
     {
-      "name": "Demo"
+      "name": "DemoService"
     },
     {
-      "name": "Global"
+      "name": "GlobalService"
     },
     {
-      "name": "GatewayAPI"
+      "name": "GatewayAPIService"
     }
   ],
   "consumes": [
@@ -24,7 +24,7 @@
   "paths": {
     "/api/v1/demo": {
       "get": {
-        "operationId": "Demo_Demo",
+        "operationId": "DemoService_Demo",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -48,13 +48,13 @@
           }
         ],
         "tags": [
-          "Demo"
+          "DemoService"
         ]
       }
     },
     "/api/v1/gatewayclasses": {
       "get": {
-        "operationId": "GatewayAPI_ListGatewayClass",
+        "operationId": "GatewayAPIService_ListGatewayClass",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -71,13 +71,13 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       }
     },
     "/api/v1/gatewayclasses/name": {
       "get": {
-        "operationId": "GatewayAPI_GetGatewayClass",
+        "operationId": "GatewayAPIService_GetGatewayClass",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -94,11 +94,11 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "delete": {
-        "operationId": "GatewayAPI_DeleteGatewayClass",
+        "operationId": "GatewayAPIService_DeleteGatewayClass",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -115,11 +115,11 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "post": {
-        "operationId": "GatewayAPI_CreateGatewayClass",
+        "operationId": "GatewayAPIService_CreateGatewayClass",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -147,11 +147,11 @@
           }
         ],
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "put": {
-        "operationId": "GatewayAPI_UpdateGatewayClass",
+        "operationId": "GatewayAPIService_UpdateGatewayClass",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -179,13 +179,13 @@
           }
         ],
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       }
     },
     "/api/v1/gateways": {
       "get": {
-        "operationId": "GatewayAPI_ListGateway",
+        "operationId": "GatewayAPIService_ListGateway",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -202,13 +202,13 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       }
     },
     "/api/v1/gateways/name": {
       "get": {
-        "operationId": "GatewayAPI_GetGateway",
+        "operationId": "GatewayAPIService_GetGateway",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -225,11 +225,11 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "delete": {
-        "operationId": "GatewayAPI_DeleteGateway",
+        "operationId": "GatewayAPIService_DeleteGateway",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -246,11 +246,11 @@
           }
         },
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "post": {
-        "operationId": "GatewayAPI_CreateGateway",
+        "operationId": "GatewayAPIService_CreateGateway",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -278,11 +278,11 @@
           }
         ],
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       },
       "put": {
-        "operationId": "GatewayAPI_UpdateGateway",
+        "operationId": "GatewayAPIService_UpdateGateway",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -310,13 +310,13 @@
           }
         ],
         "tags": [
-          "GatewayAPI"
+          "GatewayAPIService"
         ]
       }
     },
     "/api/v1/init": {
       "post": {
-        "operationId": "Global_InitCluster",
+        "operationId": "GlobalService_InitCluster",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -344,13 +344,13 @@
           }
         ],
         "tags": [
-          "Global"
+          "GlobalService"
         ]
       }
     },
     "/api/v1/token": {
       "get": {
-        "operationId": "Demo_Token",
+        "operationId": "DemoService_Token",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -366,7 +366,7 @@
           }
         },
         "tags": [
-          "Demo"
+          "DemoService"
         ]
       }
     }

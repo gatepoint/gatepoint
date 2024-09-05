@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	v1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
+	"github.com/gatepoint/gatepoint/pkg/config"
 	"github.com/gatepoint/gatepoint/pkg/health"
 	"github.com/gatepoint/gatepoint/pkg/log"
 	"github.com/gatepoint/gatepoint/pkg/utils"
@@ -28,7 +29,7 @@ func NewGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.Serve
 	mux := runtime.NewServeMux(opts...)
 
 	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
-		v1.RegisterDemoHandler,
+		v1.RegisterDemoServiceHandler,
 	} {
 		if err := f(ctx, mux, conn); err != nil {
 			return nil, err
@@ -37,18 +38,16 @@ func NewGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.Serve
 	return mux, nil
 }
 
-func Run(ctx context.Context, opts utils.Options) error {
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-
-	conn, err := dialTCP(ctx, opts.GRPCAddr)
+func Run(ctx context.Context, opts utils.Options, option func() []runtime.ServeMuxOption) error {
+	conn, err := dialTCP(config.GetGrpcAddr())
 	if err != nil {
 		return err
 	}
 	go func() {
 		<-ctx.Done()
 		if err := conn.Close(); err != nil {
-			log.L(ctx).Errorf("Failed to close a client connection to the gRPC server: %v", err)
+			log.Errorf("Failed to close a client connection to the gRPC server: %v", err)
+			//log.L(ctx).Errorf("Failed to close a client connection to the gRPC server: %v", err)
 		}
 	}()
 
@@ -60,7 +59,7 @@ func Run(ctx context.Context, opts utils.Options) error {
 
 	mux.Handle(staticPrefix, http.StripPrefix(staticPrefix, http.FileServer(http.FS(swaggerui.Resources))))
 
-	gw, err := NewGateway(ctx, conn, opts.Mux)
+	gw, err := NewGateway(ctx, conn, option())
 	if err != nil {
 		return err
 	}
@@ -72,22 +71,23 @@ func Run(ctx context.Context, opts utils.Options) error {
 	}
 	go func() {
 		<-ctx.Done()
-		log.L(ctx).Infof("Shutting down the http server")
+		log.Info("Shutting down the http server")
 		if err := s.Shutdown(context.Background()); err != nil {
-			log.L(ctx).Errorf("Failed to shutdown http server: %v", err)
+			log.Errorf("Failed to shutdown http server: %v", err)
+			//log.L(ctx).Errorf("Failed to shutdown http server: %v", err)
 		}
 	}()
 
-	log.L(ctx).Infof("Starting listening at %s", opts.HTTPAddr)
+	log.Infof("Starting listening at %s", opts.HTTPAddr)
 	if err := s.ListenAndServe(); err != http.ErrServerClosed {
-		log.L(ctx).Errorf("Failed to listen and serve: %v", err)
+		log.Errorf("Failed to listen and serve: %v", err)
 		return err
 	}
 	return nil
 }
 
-func dialTCP(ctx context.Context, addr string) (*grpc.ClientConn, error) {
-	return grpc.DialContext(ctx, addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+func dialTCP(addr string) (*grpc.ClientConn, error) {
+	return grpc.NewClient(addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
 }
 
 func openAPIServer(dir string) http.HandlerFunc {

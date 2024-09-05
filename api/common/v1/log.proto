@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package common.v1;
+
+option go_package = "github.com/gatepoint/gatepoint/api/common/v1";
+
+enum LogLevel {
+  LOG_LEVEL_UNSPECIFIED = 0;
+  LOG_LEVEL_INFO = 1;
+  LOG_LEVEL_DEBUG = 2;
+  LOG_LEVEL_WARN = 3;
+  LOG_LEVEL_ERROR = 4;
+}
+
+enum LogComponent {
+  LOG_COMPONENT_UNSPECIFIED = 0;
+  LOG_COMPONENT_DEFAULT = 1;
+  LOG_COMPONENT_GATEWAY = 2;
+  LOG_COMPONENT_DOMAIN = 3;
+  LOG_COMPONENT_SERVICE = 4;
+  LOG_COMPONENT_API = 5;
+  LOG_COMPONENT_PLUGIN = 6;
+}
