@@ -55,4 +55,4 @@ api_clean:
 
 .PHONY: server-image
 server-image:
-	docker buildx build -f tools/docker/gatepoint-server/Dockerfile -t release.daocloud.io/skoala/gatepoint:v0.12 . --platform linux/amd64,linux/arm64 --push
+	docker buildx build -f tools/docker/gatepoint-server/Dockerfile -t gatepoint/gatepoint:latest . --platform linux/amd64,linux/arm64 --push
