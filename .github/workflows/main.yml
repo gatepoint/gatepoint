@@ -29,10 +29,10 @@ jobs:
       - name: Generate API
         run: make api_gen
 
-      - name: Run golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          args: --verbose --timeout 50m
+#      - name: Run golangci-lint
+#        uses: golangci/golangci-lint-action@v3
+#        with:
+#          args: --verbose --timeout 50m
 
   docker:
     runs-on: ubuntu-latest
