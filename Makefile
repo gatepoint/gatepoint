@@ -34,16 +34,8 @@ api_install_dep:
 
 api_gen:
 	buf generate
-	#protoc -I . -I third_party \
-#		--go_out=paths=source_relative:. \
-#		--go-grpc_out=paths=source_relative:. \
-#		--grpc-gateway_out=paths=source_relative:. \
-#		--openapiv2_out=logtostderr=true:. \
-#		--openapiv2_opt allow_merge=true \
-#		--openapiv2_opt output_format=json \
-#		--openapiv2_opt merge_file_name="gatepoint." \
-#		api/gatepoint/v1/gatepoint.proto api/general/v1/demo.proto
-	cp api/gen/gatepoint.swagger.json swagger-ui/gatepoint.swagger.json
+	cp -R *.swagger.json swagger-ui/gatepoint.swagger.json
+	rm *.swagger.json
 
 api_clean:
 	#rm -rf api/gen
