@@ -22,9 +22,9 @@ jobs:
         run: make api_install_dep
 
       - name: Set up buf tool
-        uses: bufbuild/setup-buf-action@v0.3.0
+        uses: bufbuild/buf-setup-action@v1.40.0
         with:
-          version: v0.41.0
+          version: latest
 
       - name: Generate API
         run: make api_gen
