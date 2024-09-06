@@ -1,10 +1,6 @@
 FROM --platform=$BUILDPLATFORM golang:1.22 as builder
 ARG TARGETARCH
 
-# RUN apt-get update && apt-get install --no-install-recommends -y \
-#    protobuf-compiler && \
-#    apt-get clean && \
-#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN BIN="/usr/local/bin" && \
     VERSION="1.40.0" && \
     curl -sSL \

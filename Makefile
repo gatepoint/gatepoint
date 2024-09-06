@@ -7,7 +7,7 @@ run:
 
 lint:
 	make proto_lint
-	golint ./...
+	golangci-lint run --verbose --timeout 50m
 
 format: proto_format
 
