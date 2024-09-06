@@ -34,8 +34,8 @@ api_install_dep:
 
 api_gen:
 	buf generate
-	cp -R *.swagger.json swagger-ui/gatepoint.swagger.json
-	rm *.swagger.json
+	cp -R api/*.swagger.json swagger-ui/gatepoint.swagger.json
+	rm api/*.swagger.json
 
 api_clean:
 	#rm -rf api/gen
