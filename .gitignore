@@ -30,4 +30,3 @@ api/*/*.go
 api/*/*.json
 
 gatepoint.swagger.json
-!swagger-ui/gatepoint.swagger.json
