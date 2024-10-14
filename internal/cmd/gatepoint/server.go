@@ -1,4 +1,4 @@
-package cmd
+package gatepoint
 
 import (
 	"context"
@@ -10,7 +10,9 @@ import (
 	gatewayServer "github.com/gatepoint/gatepoint/internal/route/gateway"
 	grpcServer "github.com/gatepoint/gatepoint/internal/route/grpc"
 	"github.com/gatepoint/gatepoint/pkg/config"
+	"github.com/gatepoint/gatepoint/pkg/kube"
 	"github.com/gatepoint/gatepoint/pkg/log"
+	"github.com/gatepoint/gatepoint/pkg/resource"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 
 	"google.golang.org/grpc"
@@ -54,6 +56,8 @@ func getServerCommand() *cobra.Command {
 			//	OpenAPIDir: "api/v1",
 			//	KubeConfig: viper.GetString("kubernetes.kubeconfig"),
 			//}
+
+			resource.NewResourceManager(rootCtx, kube.GetKubeClient())
 			newGrpcServer := grpcServer.NewGrpcServer(rootCtx, route.RegisterGRPCRoutes, grpcServerOption)
 			go func() {
 				if err := newGrpcServer.Run(); err != nil {
@@ -72,6 +76,7 @@ func getServerCommand() *cobra.Command {
 	}
 	//cobra.OnInitialize(InitConfig)
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "./config/config.yaml", "config file (default is $HOME/.gatepoint.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&namespaces, "namespaces", "n", "gatepoint", "namespaces to watch")
 	//rootCmd.PersistentFlags().StringVarP(&httpAddr, "http-addr", "", ":8080", "HTTP listen address.")
 	//rootCmd.PersistentFlags().StringVarP(&grpcAddr, "grpc-addr", "", ":8081", "GRPC listen address.")
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")

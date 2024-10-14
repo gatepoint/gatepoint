@@ -51,19 +51,18 @@ func DefaultOptions() *Options {
 
 // ApplyFlags parsing parameters from the command line or configuration file
 // to the options instance.
-func (o *Options) ApplyFlags(loggerCfg config.Log) error {
+func (o *Options) ApplyFlags(loggerCfg *config.Log) {
 
 	var zapLevel zapcore.Level
-	if err := zapLevel.UnmarshalText([]byte(loggerCfg.Level)); err != nil {
-		return err
+	if err := zapLevel.UnmarshalText([]byte(loggerCfg.Level)); err == nil {
+		o.Level = zapLevel
 	}
-	o.Level = zapLevel
 
 	format, err := ParseFormat(loggerCfg.Format)
-	if err != nil {
-		return err
+	if err == nil {
+		o.Format = format
+
 	}
-	o.Format = format
 
 	o.DisableColor = loggerCfg.DisableColor
 	o.EnableCaller = loggerCfg.EnableCaller
@@ -74,5 +73,5 @@ func (o *Options) ApplyFlags(loggerCfg config.Log) error {
 		o.ErrorOutputPaths = loggerCfg.ErrorOutputPaths
 	}
 	o.Deployment = loggerCfg.Deployment
-	return nil
+
 }

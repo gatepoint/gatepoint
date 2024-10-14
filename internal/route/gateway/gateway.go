@@ -11,7 +11,6 @@ import (
 	"github.com/gatepoint/gatepoint/pkg/filter"
 	"github.com/gatepoint/gatepoint/pkg/health"
 	"github.com/gatepoint/gatepoint/pkg/log"
-	swaggerui "github.com/gatepoint/gatepoint/swagger-ui"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/connectivity"
@@ -41,10 +40,6 @@ func (g gatewayServer) Run() error {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/grpcHealthz", grpcHealthzServer(conn))
 	mux.Handle("/sys/", httpHealthzServer())
-
-	if config.EnableSwagger() {
-		mux.Handle(swaggerPrefix, http.StripPrefix(swaggerPrefix, http.FileServer(http.FS(swaggerui.Resources))))
-	}
 
 	err = g.newGateway(conn)
 	if err != nil {

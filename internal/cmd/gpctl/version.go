@@ -1,7 +1,7 @@
-package cmd
+package gpctl
 
 import (
-	"github.com/gatepoint/gatepoint/pkg/build"
+	"github.com/gatepoint/gatepoint/internal/version"
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +13,7 @@ func getVersionCommand() *cobra.Command {
 		Aliases: []string{"versions", "v"},
 		Short:   "Show versions",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return build.Print(cmd.OutOrStdout(), output)
+			return version.Print(cmd.OutOrStdout(), output)
 		},
 	}
 
