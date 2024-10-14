@@ -55,7 +55,7 @@ func Run(ctx context.Context, opts utils.Options, option func() []runtime.ServeM
 	mux.HandleFunc("/openapiv2/", openAPIServer(opts.OpenAPIDir))
 	mux.HandleFunc("/grpcHealthz", grpcHealthzServer(conn))
 	mux.Handle("/sys/", runHealthCheck())
-	mime.AddExtensionType(".svg", "image/svg+xml")
+	_ = mime.AddExtensionType(".svg", "image/svg+xml")
 
 	mux.Handle(staticPrefix, http.StripPrefix(staticPrefix, http.FileServer(http.FS(swaggerui.Resources))))
 

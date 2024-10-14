@@ -25,7 +25,7 @@ func (g grpcServer) Run() error {
 		return err
 	}
 	defer func() {
-		g.Stop()
+		_ = g.Stop()
 		if err := l.Close(); err != nil {
 			log.Errorf("grpc server close error:%v\n", err)
 		}

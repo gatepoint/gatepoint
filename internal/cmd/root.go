@@ -5,9 +5,7 @@ import (
 )
 
 var (
-	cfgFile  string
-	httpAddr string
-	grpcAddr string
+	cfgFile string
 )
 
 func GetRootCommand() *cobra.Command {

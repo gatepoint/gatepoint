@@ -25,7 +25,7 @@ var loggerConfig *zap.Config
 
 func initLoggerConfig() {
 	opts := DefaultOptions()
-	opts.ApplyFlags(config.GetLog())
+	_ = opts.ApplyFlags(config.GetLog())
 
 	encoderConfig := zapcore.EncoderConfig{
 		TimeKey:        "time",
