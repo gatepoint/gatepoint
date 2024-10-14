@@ -11,12 +11,13 @@ import (
 )
 
 var Shared Config
+var DefaultShared Config
 
 type Config struct {
-	Debug  bool   `json:"debug"`
-	Server Server `json:"server"`
-	Log    Log    `json:"log"`
-	Kube   Kube   `json:"kube"`
+	Debug  bool    `json:"debug"`
+	Server *Server `json:"server"`
+	Log    *Log    `json:"log"`
+	Kube   *Kube   `json:"kube"`
 
 	Swagger bool `json:"swagger"`
 	//Kubernetes
@@ -25,11 +26,13 @@ type Config struct {
 type Kube struct {
 	Incluster  bool   `json:"incluster"`
 	Kubeconfig string `json:"kubeconfig"`
+	Namespace  string `json:"namespace"`
 }
 
 type Server struct {
-	HTTP Conn `json:"http"`
-	Grpc Conn `json:"grpc"`
+	HTTP  Conn `json:"http"`
+	Grpc  Conn `json:"grpc"`
+	Admin Conn `json:"admin"`
 }
 
 type Conn struct {
@@ -45,6 +48,10 @@ type Log struct {
 	OutputPaths      []string `json:"output_paths"`
 	ErrorOutputPaths []string `json:"error_output_paths"`
 	Deployment       bool     `json:"deployment"`
+}
+
+func GetNamespace() string {
+	return config.Kube.Namespace
 }
 
 func EnableSwagger() bool {
@@ -64,11 +71,15 @@ func GetHttpAddr() string {
 
 }
 
+func GetAdminAddr() string {
+	return config.Server.Admin.Address
+}
+
 func GetKubeConfig() string {
 	return config.Kube.Kubeconfig
 }
 
-func GetLog() Log {
+func GetLog() *Log {
 	return config.Log
 }
 
@@ -102,31 +113,40 @@ func LoadConfig(cfgFile string) error {
 	}); err != nil {
 		panic(fmt.Sprintf("Failed to unmarshal configuration from disk: %v", err))
 	}
+	cfg.setDefaultConfig()
 	config = cfg
 	return nil
 }
 
-func DefaultConfig() {
-	Shared = Config{
-		Debug: false,
-		Server: Server{
-			HTTP: Conn{
-				Address: ":8080",
-				Timeout: "10s",
-			},
-			Grpc: Conn{
-				Address: ":8081",
-				Timeout: "10s",
-			},
+func (c *Config) setDefaultConfig() {
+	if c.Server == nil {
+		c.Server = defaultServer()
+	}
+	if c.Kube != nil {
+		c.Kube = defaultKube()
+	}
+}
+
+func defaultKube() *Kube {
+	return &Kube{
+		Incluster: true,
+		Namespace: "gatepoint",
+	}
+}
+
+func defaultServer() *Server {
+	return &Server{
+		HTTP: Conn{
+			Address: ":8080",
+			Timeout: "10s",
 		},
-		Log: Log{
-			Level:            "info",
-			Format:           "console",
-			DisableColor:     false,
-			EnableCaller:     true,
-			OutputPaths:      []string{"stdout"},
-			ErrorOutputPaths: []string{"stderr"},
-			Deployment:       false,
+		Grpc: Conn{
+			Address: ":8081",
+			Timeout: "10s",
+		},
+		Admin: Conn{
+			Address: ":8082",
+			Timeout: "10s",
 		},
 	}
 }

@@ -13,6 +13,9 @@
     },
     {
       "name": "GatewayAPIService"
+    },
+    {
+      "name": "AccountService"
     }
   ],
   "consumes": [
@@ -22,6 +25,70 @@
     "application/json"
   ],
   "paths": {
+    "/api/v1/accounts": {
+      "post": {
+        "operationId": "AccountService_CreateAccount",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateAccountResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateAccountRequest"
+            }
+          }
+        ],
+        "tags": [
+          "account"
+        ]
+      }
+    },
+    "/api/v1/accounts/password": {
+      "put": {
+        "operationId": "AccountService_UpdatePassword",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1UpdatePasswordResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1UpdatePasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "account"
+        ]
+      }
+    },
     "/api/v1/demo": {
       "get": {
         "operationId": "DemoService_Demo",
@@ -408,6 +475,20 @@
         }
       }
     },
+    "v1CreateAccountRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateAccountResponse": {
+      "type": "object"
+    },
     "v1DemoResponse": {
       "type": "object",
       "properties": {
@@ -423,6 +504,23 @@
           "type": "string"
         }
       }
+    },
+    "v1UpdatePasswordRequest": {
+      "type": "object",
+      "properties": {
+        "userName": {
+          "type": "string"
+        },
+        "currentPassword": {
+          "type": "string"
+        },
+        "newPassword": {
+          "type": "string"
+        }
+      }
+    },
+    "v1UpdatePasswordResponse": {
+      "type": "object"
     }
   },
   "securityDefinitions": {

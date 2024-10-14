@@ -3,6 +3,7 @@ syntax = "proto3";
 package gatepoint.v1;
 
 import "general/v1/demo.proto";
+import "account/v1/account.proto";
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
@@ -97,4 +98,27 @@ service GatewayAPIService {
   rpc ListGateway(google.protobuf.Empty) returns (google.protobuf.Empty) {
     option (google.api.http) = {get: "/api/v1/gateways"};
   }
+}
+
+service AccountService {
+  rpc CreateAccount(account.v1.CreateAccountRequest) returns (account.v1.CreateAccountResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/accounts"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["account"]
+    };
+  }
+
+  rpc UpdatePassword(account.v1.UpdatePasswordRequest) returns (account.v1.UpdatePasswordResponse){
+    option (google.api.http) = {
+      put: "/api/v1/accounts/password"
+      body: "*"
+    };
+    option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_operation) = {
+      tags: ["account"]
+    };
+  }
+
 }

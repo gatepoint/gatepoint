@@ -1,0 +1,52 @@
+syntax = "proto3";
+
+package account.v1;
+
+option go_package = "github.com/gatepoint/gatepoint/api/account/v1";
+
+message CreateAccountRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message CreateAccountResponse {}
+
+message UpdatePasswordRequest{
+  string userName = 2;
+  string currentPassword = 3;
+  string newPassword = 4;
+}
+
+message UpdatePasswordResponse {}
+
+message ListAccountRequest {
+
+}
+
+message ListAccountResponse {
+  repeated Account items = 1;
+}
+
+message GetAccountRequest {
+  string username = 1;
+}
+
+message GetAccountResponse {
+  Account account = 1;
+}
+
+message Account{
+  string username = 1;
+  bool enabled = 2;
+  //todo
+  repeated string roles = 3;
+
+  repeated Token tokens = 4;
+}
+
+message Token {
+  string id = 1;
+  int64 issuedAt = 2;
+  int64 expiresAt = 3;
+}
+

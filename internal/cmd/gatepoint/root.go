@@ -1,11 +1,13 @@
-package cmd
+package gatepoint
 
 import (
 	"github.com/spf13/cobra"
 )
 
 var (
-	cfgFile  string
+	cfgFile    string
+	namespaces string
+
 	httpAddr string
 	grpcAddr string
 )
@@ -17,7 +19,6 @@ func GetRootCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(getServerCommand())
-	cmd.AddCommand(getVersionCommand())
 
 	return cmd
 }

@@ -5,6 +5,9 @@ server:
   grpc:
     addr: 0.0.0.0:9091
     timeout: 1s
+  admin:
+    addr: 0.0.0.0:10000
+    timeout: 1s
 debug: true
 swagger: true
 
@@ -16,3 +19,4 @@ log:
 kube:
   incluster: false
   kubeconfig:
+  namespace: gatepoint
