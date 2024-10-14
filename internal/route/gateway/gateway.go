@@ -32,7 +32,7 @@ func (g gatewayServer) Run() error {
 		return err
 	}
 	defer func() {
-		g.Stop()
+		_ = g.Stop()
 		if err = conn.Close(); err != nil {
 			log.Errorf("grpc client close error:%v\n", err)
 			return

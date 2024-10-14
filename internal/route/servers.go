@@ -25,5 +25,5 @@ func HttpErrorHandler(ctx context.Context, _ *runtime.ServeMux, _ runtime.Marsha
 	s, ee := json.Marshal(&e)
 	fmt.Println(ee)
 	writer.WriteHeader(e.HTTPCode())
-	writer.Write(s)
+	_, _ = writer.Write(s)
 }

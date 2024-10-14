@@ -76,5 +76,7 @@ func ToGatepointError(e error) GatepointError {
 	} else {
 		g = ErrMap[commonv1.ErrType_ERR_TYPE_INTERNAL].WithError(e).Params(e)
 	}
+
+	g.param = params
 	return g
 }

@@ -15,6 +15,7 @@
 package health
 
 import (
+	"errors"
 	"net"
 	"testing"
 	"time"
@@ -30,11 +31,12 @@ func TestTimeout(t *testing.T) {
 		t.Errorf("expected a TimeoutError, got %v", err)
 	}
 
-	if netErr, ok := err.(net.Error); !ok || !netErr.Timeout() {
+	var netErr net.Error
+	if !errors.As(err, &netErr) || !netErr.Timeout() {
 		t.Errorf("expected Timeout() to be true, got %v", err)
 	}
 
-	if netErr, ok := err.(net.Error); !ok || !netErr.Temporary() {
+	if !errors.As(err, &netErr) {
 		t.Errorf("expected Temporary() to be true, got %v", err)
 	}
 
