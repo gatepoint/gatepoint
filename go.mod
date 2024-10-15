@@ -6,8 +6,8 @@ require (
 	github.com/gatepoint/gatepoint/api v0.0.0-00010101000000-000000000000
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/golang/glog v1.2.1
-	github.com/gomarkdown/markdown v0.0.0-20240730141124-034f12af3bf6
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
+	github.com/grpc-ecosystem/go-grpc-middleware/v2 v2.1.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.21.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/mitchellh/mapstructure v1.5.0

@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package general.v1;
+
+option go_package = "github.com/gatepoint/gatepoint/api/general/v1";
+
+
+message VersionRes {
+  string version = 1;
+}

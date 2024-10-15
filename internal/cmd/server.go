@@ -6,6 +6,10 @@ import (
 	"os/signal"
 	"syscall"
 
+	"github.com/gatepoint/gatepoint/pkg/interceptor"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/auth"
+	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/selector"
+
 	"github.com/gatepoint/gatepoint/internal/route"
 	gatewayServer "github.com/gatepoint/gatepoint/internal/route/gateway"
 	grpcServer "github.com/gatepoint/gatepoint/internal/route/grpc"
@@ -83,7 +87,14 @@ func getServerCommand() *cobra.Command {
 }
 
 func grpcServerOption() []grpc.ServerOption {
-	return nil
+	return []grpc.ServerOption{
+		grpc.ChainUnaryInterceptor(
+			selector.UnaryServerInterceptor(auth.UnaryServerInterceptor(interceptor.Auth), selector.MatchFunc(interceptor.AllButHealthZ)),
+		),
+		grpc.ChainStreamInterceptor(
+			selector.StreamServerInterceptor(auth.StreamServerInterceptor(interceptor.Auth), selector.MatchFunc(interceptor.AllButHealthZ)),
+		),
+	}
 }
 
 func serverMuxOption() []runtime.ServeMuxOption {
