@@ -6,10 +6,8 @@ import (
 	"log"
 	"strconv"
 
-	commonv1 "github.com/gatepoint/gatepoint/api/common/v1"
 	projectv1 "github.com/gatepoint/gatepoint/api/gatepoint/v1"
 	generalv1 "github.com/gatepoint/gatepoint/api/general/v1"
-	"github.com/gatepoint/gatepoint/pkg/errors"
 	"github.com/gatepoint/gatepoint/pkg/kube"
 	"github.com/gatepoint/gatepoint/pkg/utils"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -27,11 +25,6 @@ func NewDemoService() *DemoService {
 	return &DemoService{clientset: kube.GetKubeClient()}
 }
 func (s *DemoService) Demo(ctx context.Context, req *generalv1.DemoRequest) (*generalv1.DemoResponse, error) {
-	_, err := utils.AuthJWT(ctx)
-	if err != nil {
-		return nil, errors.ErrMap[commonv1.ErrType_ERR_TYPE_UNAUTHORIZED].WithError(err)
-	}
-
 	return &generalv1.DemoResponse{
 		Demo: &generalv1.Demo{
 			Demo: req.Demo,

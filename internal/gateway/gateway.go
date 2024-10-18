@@ -30,6 +30,7 @@ func NewGateway(ctx context.Context, conn *grpc.ClientConn, opts []runtime.Serve
 
 	for _, f := range []func(context.Context, *runtime.ServeMux, *grpc.ClientConn) error{
 		v1.RegisterDemoServiceHandler,
+		v1.RegisterGlobalServiceHandler,
 	} {
 		if err := f(ctx, mux, conn); err != nil {
 			return nil, err

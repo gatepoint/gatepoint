@@ -5,6 +5,13 @@ server:
   grpc:
     addr: 0.0.0.0:9091
     timeout: 1s
+    interceptors:
+      auth:
+        enabled: true
+        ignoreMethods:
+          - GlobalService/GetVersion
+          - DemoService/Token
+
 debug: true
 swagger: true
 
@@ -15,4 +22,4 @@ log:
 
 kube:
   incluster: false
-  kubeconfig:
+  kubeconfig: /Users/wilsonwu/.kube/config
