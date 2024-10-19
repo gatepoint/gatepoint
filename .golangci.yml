@@ -1,10 +1,9 @@
 #   ref:
 #   1. https://freshman.tech/linting-golang/
-#   2. github.com/ndx/kpanda
-#   3. https://golangci-lint.run/usage/configuration/
-#   4. https://ttys3.dev/post/how-we-make-gitlab-golangci-lint-runs-50-times-faster/
-#   5. https://gist.github.com/b-pagis/ed5cec27b864766f5903a5214ca5413f/
-#   6. https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
+#   2. https://golangci-lint.run/usage/configuration/
+#   3. https://ttys3.dev/post/how-we-make-gitlab-golangci-lint-runs-50-times-faster/
+#   4. https://gist.github.com/b-pagis/ed5cec27b864766f5903a5214ca5413f/
+#   5. https://github.com/golangci/golangci-lint/blob/master/.golangci.example.yml
 
 run:
   timeout: 10m
@@ -316,6 +315,6 @@ issues:
 # golangci.com configuration
 # https://github.com/golangci/golangci/wiki/Configuration
 service:
-  golangci-lint-version: 1.50.x # use the fixed version to not introduce new linters unexpectedly
+  golangci-lint-version: 1.61.x # use the fixed version to not introduce new linters unexpectedly
   prepare:
     - echo "here I can run custom commands, but no preparation needed for this repo"
