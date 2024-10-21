@@ -45,7 +45,7 @@ service GlobalService {
     };
   }
 
-  rpc GetVersion(google.protobuf.Empty) returns (general.v1.VersionRes) {
+  rpc GetVersion(google.protobuf.Empty) returns (general.v1.GetVersionResponse) {
     option (google.api.http) = {
       get: "/api/v1/version"
     };

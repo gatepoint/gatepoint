@@ -4,7 +4,7 @@ modules:
   - path: third_party
 lint:
   use:
-    - DEFAULT
+    - STANDARD
   ignore:
     - third_party
   rpc_allow_google_protobuf_empty_responses: true
