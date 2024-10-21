@@ -5,6 +5,6 @@ package general.v1;
 option go_package = "github.com/gatepoint/gatepoint/api/general/v1";
 
 
-message VersionRes {
+message GetVersionResponse {
   string version = 1;
 }

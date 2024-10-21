@@ -17,8 +17,8 @@ func NewGlobalService() *GlobalService {
 	return &GlobalService{}
 }
 
-func (s *GlobalService) GetVersion(ctx context.Context, req *emptypb.Empty) (*generalv1.VersionRes, error) {
-	return &generalv1.VersionRes{
+func (s *GlobalService) GetVersion(ctx context.Context, req *emptypb.Empty) (*generalv1.GetVersionResponse, error) {
+	return &generalv1.GetVersionResponse{
 		Version: "v0.0.1",
 	}, nil
 }
